@@ -1,3 +1,4 @@
+/* decimalToBinary.c -- 십진수의 값을 입력받아 그 값을 이진수로 변환하는 프로그램 */
 #include <stdio.h>
 
 int main()

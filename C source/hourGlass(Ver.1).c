@@ -18,7 +18,7 @@ int main()
 		}
 		for (int i = size / 2 + 1; i < size; i++) //피라미드를 반복문을 통해 중간부터 마지막까지 순차적으로 출력함
 		{
-			temp--; //실제적으로 i 변수에 의해 피라미드가 출력되므로 i와 비슷한 temp 변수를 계속 줄이면서 피라미드를 출력함
+			temp--; //실제적으로 i 변수에 의해 피라미드가 출력되므로 i와 비슷한 temp 변수를 중간 부분부터 계속 줄이면서 피라미드를 출력함
 			for (j = 0; j < temp; j++) printf(" ");
 			for (k = 0; k < size - 2 * temp; k++) printf("*");
 			printf("\n");

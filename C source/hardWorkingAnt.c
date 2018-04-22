@@ -16,31 +16,31 @@ int main()
         }
     }
      
-    int column = 1, row = 1;
+    int row = 1, column = 1;
      
     while (1)
     {
-        if (hwA[column][row + 1] == 0)
+        if (hwA[row][column + 1] == 0)
         {
-            hwA[column][row] = 9;
+            hwA[row][column] = 9;
+            column++;
+        }
+        else if (hwA[row][column + 1] == 1 && hwA[row + 1][column] == 0)
+        {
+            hwA[row][column] = 9;
             row++;
         }
-        else if (hwA[column][row + 1] == 1 && hwA[column + 1][row] == 0)
+        else if (hwA[row][column + 1] == 1 && hwA[row + 1][column] == 2)
         {
-            hwA[column][row] = 9;
-            column++;
-        }
-        else if (hwA[column][row + 1] == 1 && hwA[column + 1][row] == 2)
-        {
-            hwA[column][row] = 9;
-            column++;
+            hwA[row][column] = 9;
+            row++;
             break;
         }
         else
             break;
     }
      
-    hwA[column][row] = 9;
+    hwA[row][column] = 9;
      
     for (int i = 0; i < 10; i++)
     {

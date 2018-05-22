@@ -19,7 +19,7 @@ int quit()
 	gets(ch);
 	return ch[0] == 'Q' ? 0 : 1;
 }
-void show_board(char (* board)[3])
+void show_board(char (* board)[COLS])
 {
 	printf("    1   2   3\n");
 	for (int i = 0; i < ROWS; i++)
@@ -34,7 +34,7 @@ void show_board(char (* board)[3])
 	}
 	printf("\n");
 }
-void place_p(char (* board)[3])
+void place_p(char (* board)[COLS])
 {
 	int i, j, temp, done = 1;
 	do
@@ -55,7 +55,7 @@ void place_p(char (* board)[3])
 	if (turn) turn = 0;
 	else turn = 1;
 }
-int check(char (* board)[3])
+int check(char (* board)[COLS])
 {
 	cnt++;
 	if (rowCheck(board)) status = rowCheck(board);
@@ -65,7 +65,7 @@ int check(char (* board)[3])
 
 	return status;
 }
-void clean(char (* board)[3])
+void clean(char (* board)[COLS])
 {
 	for (int i = 0; i < ROWS; i++)
 	{
@@ -79,7 +79,7 @@ void clean(char (* board)[3])
 	turn = 0;
 }
 
-static int drawCheck(char (* board)[3])
+static int drawCheck(char (* board)[COLS])
 {
 	int result = 0, flag = 0;
 	for (int i = 0; i < ROWS; i++)
@@ -98,7 +98,7 @@ static int drawCheck(char (* board)[3])
 	}
 	return result;
 }
-static int rowCheck(char (* board)[3])
+static int rowCheck(char (* board)[COLS])
 {
 	int result = 0;
 	for (int i = 0; i < ROWS; i++)
@@ -112,7 +112,7 @@ static int rowCheck(char (* board)[3])
 	}
 	return result;
 }
-static int colsCheck(char (* board)[3])
+static int colsCheck(char (* board)[COLS])
 {
 	int result = 0;
 	for (int i = 0; i < COLS; i++)
@@ -126,7 +126,7 @@ static int colsCheck(char (* board)[3])
 	}
 	return result;
 }
-static int diasCheck(char (* board)[3])
+static int diasCheck(char (* board)[COLS])
 {
 	int result = 0;
 	if (board[0][0] == board[1][1] && board[1][1] == board[2][2])

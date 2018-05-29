@@ -4,7 +4,6 @@
 
 주로 CLI 방식을 통해 사용자와 소통할 수 있는 프로그램들을 위주로 개발하고 있으니 한층 재미있는 창작들이 많을 것입니다.(C라서 허접하고 재미 없을 수 있지만...) 아래는 제가 개발한 것 리스트입니당
 
-
 ### 2018.4
 
 ```
@@ -24,10 +23,13 @@
 - 숫자 달팽이 만들기
 - 핸드메이드(UnKNOWn 손) 틱-텍-토 게임
 ```
-- Wonho Ha colaborate this project
+- <h3>Wonho Ha colaborate this project
 ### 2018.6
 - Some Example for C Beginner
+    - C 언어를 처음 시작하는 사람들을 위한 간단한 예제코드
 - Simple Todo List(CLI)
+    - 간단한 할일 리스트. 삭제가 가능하고 우선순위 설정이 가능하다.
+    - 함수 제작 방법을 이해하기 위한 예제.
 
 > 작성자 : Wonho Ha, Joonyeung Jang<p>
 > License : MIT

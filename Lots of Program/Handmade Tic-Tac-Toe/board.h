@@ -7,6 +7,7 @@
 char board[ROWS][COLS];
 extern int status;
 
+void playerSet();
 void show_board(char (* board)[COLS]);
 void place_p(char (* board)[COLS]);
 int check(char (* board)[COLS]);

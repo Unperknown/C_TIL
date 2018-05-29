@@ -7,6 +7,17 @@ static int colsCheck(char (* board)[COLS]);
 static int diasCheck(char (* board)[COLS]);
 static int drawCheck(char (* board)[COLS]);
 
+void playerSet()
+{
+	do
+	{
+		if (temp) printf("Enter different nickname.\n");
+		printf("Enter Player1's name.\n< ");
+		s_get(player1, 50);
+		printf("Enter Player2's name.\n< ");
+		s_get(player2, 50);
+	} while (temp = !strcmp(player1, player2));
+}
 void end()
 {
 	char ch[100];

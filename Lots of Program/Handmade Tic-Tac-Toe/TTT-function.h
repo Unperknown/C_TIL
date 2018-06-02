@@ -6,8 +6,8 @@ extern int status;
 extern char board[ROW_MAX][COL_MAX];
 extern char player1[INDEX_MAX], player2[INDEX_MAX];
 
-void quit();
-int restartOrNot();
+void cleanBoard(char (*board)[COL_MAX]);
 void playerSet();
-int cleanBoard();
-int placeBoard();
+int placeBoard(char (*board)[COL_MAX]);
+int restartOrNot();
+void quit();

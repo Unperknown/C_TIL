@@ -3,29 +3,31 @@
 #include <string.h>
 #include <conio.h>
 #include <windows.h>
-#include "function.h"
+#include "TTT-function.h"
 #define UP 72
 #define DOWN 80
 #define LEFT 75
 #define RIGHT 77
 #define ENTER 13
 
-char board[ROW_MAX][COL_MAX];
-char player1[INDEX_MAX], player2[INDEX_MAX];
-static int cnt = 0;
-static int turn = 0;
+char board[ROW_MAX][COL_MAX]; //각 스테이지 당 놓은 수를 저장할 공간
+char player1[INDEX_MAX], player2[INDEX_MAX]; //플레이어 닉네임을 설정할 공간
 int status = 0; //현재 스테이지의 상태를 나타냄(Player1을 기준으로 승리이면 1, 패배이면 2, 무승부이면 3, 그 외의 경우는 0)
+static int x_axis = 5, y_axis = 3; //커서 좌표를 나타내는 변수(초기 값은 게임판의 가운데 좌표 값)
+static int cnt = 0; //놓은 횟수 측정
+static _Bool turn = 0; //두 플레이어의 구분을 위한 임시 변수
 
-static int stageCheck();
-static char * get_s(char *str, int max);
-static void showBoard();
-static void cersorMoveTo(int x, int y);
-static int rowCheck();
+static void showBoard(char (*board)[COL_MAX]); //현재 스테이지 상태 출력 함수
+static int detectBoundary(int x, int y); //수를 놓을 때 경계 유무 확인
+static int stageCheck(); //빙고 유무 확인
+static int rowCheck(); //빙고 유무 확인 하위 함수들(가로, 세로, 대각선)
 static int colsCheck();
 static int diasCheck();
-static int drawCheck(); 
+static char buffer(); //입력할 때 개행 문자의 입력으로 인한 오류를 막기 위한 임시 버퍼 함수
+static char * get_s(char *str, int max); //플레이어 이름을 공백도 허용하기 위해 만든 임시 문자열 입력 함수
+static void cersorMoveTo(int x, int y); //커서 이동 함수
 
-int cleanBoard()
+void cleanBoard(char (*board)[COL_MAX])
 {
 	int row, col;
 	
@@ -35,35 +37,33 @@ int cleanBoard()
 		{
 			board[row][col] = '\0';
 		}
-	}	
+	}
+	x_axis = 5;
+	y_axis = 3;
 	cnt = 0;
 	status = 0;
-	turn  = 0;
-	return 1;
+	turn = 0;
 }
 void playerSet()
 {
-	int temp = 0;
+	_Bool sameNickname;
 	do
 	{
-		if (temp) printf("Enter different nickname.\n");
+		if (sameNickname) printf("Enter different nickname.\n");
 		printf("Enter Player1's name.\n< ");
 		get_s(player1, INDEX_MAX);
 		printf("Enter Player2's name.\n< ");
 		get_s(player2, INDEX_MAX);
-	} while (temp = !strcmp(player1, player2));
+	} while (sameNickname = !strcmp(player1, player2));
 }	
-int placeBoard()
+int placeBoard(char (*board)[COL_MAX])
 {
-	system("cls");
-	int x_axis = 5, y_axis = 3;
-	int placedOrNot = 1, check;
-	printf("%s: %s VS %s: %s\n", turn ? "Player1" : "PLAYER1", player1, turn ? "PLAYER2" : "Player2", player2);
-	showBoard();
+	int check, placedOrNot = 1;
+	showBoard(board);
 	while (placedOrNot)
 	{
-		cersorMoveTo(x_axis, y_axis);
 		char input;
+		cersorMoveTo(x_axis, y_axis);
 		if ((input = getch()) == -32 || input == 0)
 			input = getch();
 		switch (input)
@@ -78,44 +78,21 @@ int placeBoard()
 					board[y_axis / 2][x_axis / 4] = turn ? 'X' : 'O';
 					placedOrNot = 0;
 					turn = turn ? 0 : 1;
-					if (check = stageCheck())
-					{
-						system("cls");
-						printf("Player1: %s VS Player2: %s\n", player1, player2);
-						showBoard();
-					}
+					if (check = stageCheck()) showBoard(board);
 					return !check;
 				}
 		}
-		if (x_axis < 1)
-		{
-			x_axis = 9;
-		}
-		else if (x_axis > 9)
-		{
-			x_axis = 1;
-		}
-		else if (y_axis < 1)
-		{
-			y_axis = 5;
-		}
-		else if (y_axis > 5)
-		{
-			y_axis = 1;
-		}
+		detectBoundary(x_axis, y_axis);
 	}
 }
 int restartOrNot()
 {
-	char ch[100];
-	gets(ch);
-	return ch[0] == 'Q' ? 0 : 1;
+	return buffer() == 'Q' ? 0 : 1;
 }
 void quit()
 {
 	printf("Had fun enjoying game? Bye!\n");
-	char ch[100];
-	gets(ch);
+	buffer();
 	exit(EXIT_FAILURE);
 }
 
@@ -131,6 +108,12 @@ static int stageCheck()
 
 	if (status) cersorMoveTo(0, 6);
 	return status;
+}
+static char buffer()
+{
+	char ch[100];
+	gets(ch);
+	return ch[0];
 }
 static char * get_s(char *str, int max)
 {
@@ -148,8 +131,10 @@ static char * get_s(char *str, int max)
 	
 	return ret_str;
 }
-static void showBoard()
+static void showBoard(char (* board)[COL_MAX])
 {
+	system("cls");
+	printf("Player1: %s VS Player2: %s\n", player1, player2);
 	printf(" %c | %c | %c\n", board[0][0], board[0][1], board[0][2]);
 	printf("-----------\n");
 	printf(" %c | %c | %c\n", board[1][0], board[1][1], board[1][2]);
@@ -163,7 +148,14 @@ static void cersorMoveTo(int x, int y)
 	handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(handle, position);	
 }
-static int rowCheck()
+static int detectBoundary(int x, int y)
+{
+	if (x < 1) x = 9;
+	else if (x > 9) x = 1;
+	else if (y < 1) y = 5;
+	else if (y > 5) y = 1;
+}
+static int rowCheck(char (* board)[COL_MAX])
 {
 	int result = 0;
 	for (int i = 0; i < ROW_MAX; i++)
@@ -177,7 +169,7 @@ static int rowCheck()
 	}
 	return result;
 }
-static int colsCheck()
+static int colsCheck(char (* board)[COL_MAX])
 {
 	int result = 0;
 	for (int i = 0; i < COL_MAX; i++)
@@ -191,7 +183,7 @@ static int colsCheck()
 	}
 	return result;
 }
-static int diasCheck()
+static int diasCheck(char (* board)[COL_MAX])
 {
 	int result = 0;
 	if (board[0][0] == board[1][1] && board[1][1] == board[2][2])

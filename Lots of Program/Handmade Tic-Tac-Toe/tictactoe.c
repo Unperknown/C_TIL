@@ -1,7 +1,9 @@
 #include <stdio.h>
-#include "function.h"
+#include "TTT-function.h"
 
 extern char player1[INDEX_MAX], player2[INDEX_MAX];
+extern char board[ROW_MAX][COL_MAX];
+extern int status;
 void gameStart();
 void gameResult();
 
@@ -20,8 +22,8 @@ int main()
 void gameStart()
 {
 	playerSet(); //플레이어 이름 설정
-	cleanBoard(); //스테이지 시작 시 게임판 초기화(스테이지가 여러 개 있으므로)
-	while (placeBoard());
+	cleanBoard(board); //스테이지 시작 시 게임판 초기화(스테이지가 한 개 이상 있으므로)
+	while (placeBoard(board));
 }
 void gameResult()
 {

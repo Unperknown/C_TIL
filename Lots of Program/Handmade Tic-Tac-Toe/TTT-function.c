@@ -18,7 +18,7 @@ static int cnt = 0; //놓은 횟수 측정
 static _Bool turn = 0; //두 플레이어의 구분을 위한 임시 변수
 
 static void showBoard(char (*board)[COL_MAX]); //현재 스테이지 상태 출력 함수
-static int detectBoundary(int x, int y); //수를 놓을 때 경계 유무 확인
+static void detectBoundary(int *x, int *y); //수를 놓을 때 경계 유무 확인
 static int stageCheck(); //빙고 유무 확인
 static int rowCheck(); //빙고 유무 확인 하위 함수들(가로, 세로, 대각선)
 static int colsCheck();
@@ -46,7 +46,7 @@ void cleanBoard(char (*board)[COL_MAX])
 }
 void playerSet()
 {
-	_Bool sameNickname;
+	_Bool sameNickname = 0;
 	do
 	{
 		if (sameNickname) printf("Enter different nickname.\n");
@@ -76,13 +76,12 @@ int placeBoard(char (*board)[COL_MAX])
 				if (board[y_axis / 2][x_axis / 4] == '\0')
 				{
 					board[y_axis / 2][x_axis / 4] = turn ? 'X' : 'O';
-					placedOrNot = 0;
 					turn = turn ? 0 : 1;
 					if (check = stageCheck()) showBoard(board);
 					return !check;
 				}
 		}
-		detectBoundary(x_axis, y_axis);
+		detectBoundary(&x_axis, &y_axis);
 	}
 }
 int restartOrNot()
@@ -148,14 +147,14 @@ static void cersorMoveTo(int x, int y)
 	handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(handle, position);	
 }
-static int detectBoundary(int x, int y)
+static void detectBoundary(int *x, int *y)
 {
-	if (x < 1) x = 9;
-	else if (x > 9) x = 1;
-	else if (y < 1) y = 5;
-	else if (y > 5) y = 1;
+	if (*x < 1) *x = 9;
+	else if (*x > 9) *x = 1;
+	else if (*y < 1) *y = 5;
+	else if (*y > 5) *y = 1;
 }
-static int rowCheck(char (* board)[COL_MAX])
+static int rowCheck()
 {
 	int result = 0;
 	for (int i = 0; i < ROW_MAX; i++)
@@ -169,7 +168,7 @@ static int rowCheck(char (* board)[COL_MAX])
 	}
 	return result;
 }
-static int colsCheck(char (* board)[COL_MAX])
+static int colsCheck()
 {
 	int result = 0;
 	for (int i = 0; i < COL_MAX; i++)
@@ -183,7 +182,7 @@ static int colsCheck(char (* board)[COL_MAX])
 	}
 	return result;
 }
-static int diasCheck(char (* board)[COL_MAX])
+static int diasCheck()
 {
 	int result = 0;
 	if (board[0][0] == board[1][1] && board[1][1] == board[2][2])

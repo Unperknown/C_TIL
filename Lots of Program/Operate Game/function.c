@@ -13,8 +13,8 @@ void print_game()
 	printf("\n");
 	bar();
 	printf("1. PLUS(+)\n");
-	printf("2. MINUS(-)\n");
-	printf("3. MULTIPLE(*)\n");
+	printf("2. SUBTRACT(-)\n");
+	printf("3. MULTIPLY(*)\n");
 	printf("4. DIVIDE(/)\n");
 	bar();
 }

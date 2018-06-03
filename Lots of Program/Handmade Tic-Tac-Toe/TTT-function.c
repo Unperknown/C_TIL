@@ -25,6 +25,7 @@ static int colsCheck();
 static int diasCheck();
 static char buffer(); //입력할 때 개행 문자의 입력으로 인한 오류를 막기 위한 임시 버퍼 함수
 static char * get_s(char *str, int max); //플레이어 이름을 공백도 허용하기 위해 만든 임시 문자열 입력 함수
+static int getch_(char ch);
 static void cersorMoveTo(int x, int y); //커서 이동 함수
 
 void cleanBoard(char (*board)[COL_MAX])
@@ -64,9 +65,7 @@ int placeBoard(char (*board)[COL_MAX])
 	{
 		char input;
 		cersorMoveTo(x_axis, y_axis);
-		if ((input = getch()) == -32 || input == 0)
-			input = getch();
-		switch (input)
+		switch (getch_(input))
 		{
 			case LEFT: x_axis -= 4; break;
 			case RIGHT: x_axis += 4; break;
@@ -129,6 +128,13 @@ static char * get_s(char *str, int max)
 	}
 	
 	return ret_str;
+}
+static int getch_(char ch)
+{
+	if ((ch = getch()) == -32 || ch == 0)
+		ch = getch();
+	
+	return ch;
 }
 static void showBoard(char (* board)[COL_MAX])
 {

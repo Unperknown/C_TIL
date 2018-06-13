@@ -4,6 +4,7 @@
 extern char player1[INDEX_MAX], player2[INDEX_MAX];
 extern char board[ROW_MAX][COL_MAX];
 extern int status;
+
 void gameStart();
 void gameResult();
 
@@ -32,7 +33,7 @@ void gameResult()
 	{
 		case 1: printf("Winner is %s!\n", player1); break;
 		case 2: printf("Winner is %s!\n", player2); break;
-		case 3: printf("Both didn't win, it's draw.\n"); break;
+		case 3: printf("Draw.\n"); break;
 	}
-	printf("Want to play again? Press any key to continue.(Press Q if you want to quit.)\n");
+	printf("Want to play again? Press any sentence to continue.(Press Q if you want to quit)\n");
 }

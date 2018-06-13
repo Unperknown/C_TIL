@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <conio.h>
-#include <windows.h>
+#include <conio.h> //커서 옮김 사용
+#include <windows.h> //화면 지우기 사용
 #include "TTT-function.h"
 #define UP 72
 #define DOWN 80
@@ -25,7 +25,7 @@ static int colsCheck();
 static int diasCheck();
 static char buffer(); //입력할 때 개행 문자의 입력으로 인한 오류를 막기 위한 임시 버퍼 함수
 static char * get_s(char *str, int max); //플레이어 이름을 공백도 허용하기 위해 만든 임시 문자열 입력 함수
-static int getch_(char ch);
+static int getch_(char ch); //특수 문자는 다시 입력하게 하는 getch() 함수
 static void cersorMoveTo(int x, int y); //커서 이동 함수
 
 void cleanBoard(char (*board)[COL_MAX])
@@ -47,10 +47,10 @@ void cleanBoard(char (*board)[COL_MAX])
 }
 void playerSet()
 {
-	_Bool sameNickname = 0;
+	int sameNickname = 0;
 	do
 	{
-		if (sameNickname) printf("Enter different nickname.\n");
+		if (sameNickname) printf("Enter different Nickname.\n");
 		printf("Enter Player1's name.\n< ");
 		get_s(player1, INDEX_MAX);
 		printf("Enter Player2's name.\n< ");
@@ -78,7 +78,7 @@ int placeBoard(char (*board)[COL_MAX])
 					turn = turn ? 0 : 1;
 					if (check = stageCheck()) showBoard(board);
 					return !check;
-				}
+				} break;
 		}
 		detectBoundary(&x_axis, &y_axis);
 	}
@@ -89,7 +89,7 @@ int restartOrNot()
 }
 void quit()
 {
-	printf("Had fun enjoying game? Bye!\n");
+	printf("Bye!\n");
 	buffer();
 	exit(EXIT_FAILURE);
 }
